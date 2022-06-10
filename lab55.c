@@ -1,26 +1,28 @@
-#include  <stdio.h>
-#include  <math.h>
-#include  <string.h>
-static void Main(string args[])
+#include <math.h>
+#include <stdio.h>
+int checkProst(int x, int i)
 {
-  bool prost = true;
-  Console.WriteLine("Введите натуральное число\n");
-  int n = int.Parse(Console.ReadLine());
-  for (int i = 2; i <= n/2; i++)
-  {
-    if (n % i == 0)
-    {
-      prost = false;
-      break;
-    }
-  }
-  if (prost)
-  {
-    Console.WriteLine("Число простое");
-  }
+  if (i == 1)
+    return 1;
   else
   {
-    Console.WriteLine("Число не простое");
+    if (x % i == 0)
+      return 0;
+    else
+      return checkProst(x, i - 1);
   }
-  Console.ReadKey();
+}
+int main()
+{
+    int x, prost;
+    printf("Введите число: ");
+    scanf("%d", &x);
+    prost = checkProst(x, x / 2);
+    if (prost == 1)
+    {
+        printf("Число простое \n");
+    }
+    else
+        printf("Число не простое \n");
+    return 0;
 }

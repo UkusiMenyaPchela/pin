@@ -7,9 +7,9 @@ int main()
   scanf("%lf", &h);
   printf("%-20sf(x)\n", "x");
   printf("-----------------------------\n");
-  int count_h = (int)(2 / h);
+  int countH = (int)(2 / h);
   double y;
-  for (int i = 0; i <= count_h; i++)
+  for (int i = 0; i <= countH; i++)
   {
     double x = i * h;
     if (x <= 1)

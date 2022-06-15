@@ -1,23 +1,35 @@
 #include <stdio.h>
-#include <math.h>
-unsigned long long int fr(unsigned long long int n, unsigned long long int a)
+int check1(int x, int n)
 {
-return a ? fr(n, a - 1) * n : 1;
+  if (n == 1)
+    return 1;
+  if (!(x % n))
+    return 0;
+  else
+    return check1(x, n-1);
 }
-unsigned long long int fl(unsigned long int n, unsigned long long int a)
+int check2(int x)
 {
-unsigned long long int i, res = 1;
-for(i = 0; i < a; i++)
-res *= n;
-return res;
+  for (int n = 2; n < x; n ++)
+  {
+    if (!(x % n))
+     return 0;
+  }
+  return 1;
 }
 int main()
 {
-unsigned long long int n, a;
-printf("Введи число n\nn -> ");
-scanf("%llu", &n);
-printf("Степень a\nn -> ");
-scanf("%llu", &a);
-printf ("Получилось = %llu\n", fl(n, a));
-return 0;
-}     
+  int x;
+  printf("Введите число: ");
+  scanf("%d", &x);
+  if (x == 1)
+  {
+    printf("Число 1 не является простым\n");
+    return 0;
+  }
+  printf("Число %d - ", x);
+  check1(x, x-1) ? printf("простое\n") : printf("не простое\n");
+  printf("Число %d - ", x);
+  check2(x) ? printf("простое\n") : printf("не простое\n");
+  return 0;
+}

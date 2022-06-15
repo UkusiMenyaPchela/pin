@@ -7,10 +7,10 @@ int main()
   scanf("%lf", &h);
   printf("%-20sf(x)\n", "x");
   printf("-----------------------------\n");
-  int count_h = (int)(2 / h);
+  int countH = (int)(2 / h);
   double y;
   int i = 0;
-  while (i <= count_h)
+  while (i <= countH)
   {
     double x = i * h;
     if (x <= 1)

@@ -25,3 +25,4 @@ int main()
   str2[idx] = '\0';
   puts(str2);
   return 0;
+}

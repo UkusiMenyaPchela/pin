@@ -1,109 +1,126 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
-#pragma warning(disable : 4996)
+#include <stdlib.h>
 
-struct friends {
-  char* surname = (char*)malloc(sizeof(char) * 100);
-  char* name = (char*)malloc(sizeof(char) * 100);
-  char* patronymic = (char*)malloc(sizeof(char) * 100);
-  struct tm date_of_birth;
-  char* address = (char*)malloc(sizeof(char) * 100);
-  char* phone_number = (char*)malloc(sizeof(char) * 100);
-};
+typedef struct cafe {
+    char name[256];
+    char category[256];
+    int calories;
+    int grams;
+    int price;
+} cafe;
 
-
-// Функция добавления записи
-void add_note(friends friiends[], int count){
-  //int date;
-  char* data_input = (char *)malloc(sizeof(char) * 100);
-  printf("Enter surname: ");
-  fgets(data_input, 100, stdin);
-  data_input[strlen(data_input) - 1] = 0;
-  sprintf(friends[count].surname, "%s", data_input);
-  printf("Enter name: ");
-  fgets(data_input, 100, stdin);
-  data_input[strlen(data_input) - 1] = 0;
-  sprintf(friends[count].name, "%s", data_input);
-  printf("Enter patronymic: ");
-  fgets(data_input, 100, stdin);
-  data_input[strlen(data_input) - 1] = 0;
-  sprintf(friends[count].patronymic, "%s", data_input);
-  printf("Enter date of birth (dd.mm.yyyy): ");
-  int month, year;
-  scanf("%d.%d.%d", &friends[count].date_of_birth.tm_mday, &month, &year);
-  month--;
-  year -= 1900;
-  friends[count].date_of_birth.tm_mon = month;
-  friends[count].date_of_birth.tm_year = year;
-  flush_input();
-  printf("Enter address: ");
-  fgets(data_input, 100, stdin);
-  data_input[strlen(data_input) - 1] = 0;
-  sprintf(friends[count].address, "%s", data_input);
-  printf("Enter phone number: ");
-  fgets(data_input, 100, stdin);
-  data_input[strlen(data_input) - 1] = 0;
-  sprintf(friends[count].phone_number, "%s", data_input);
-}
-// Функция печати всех записей
-void print_notes(friends friiends[], int count)
+void add_note(cafe c[], int n)
 {
-    for(int i = 0; i < count; i++)
-      char date_b[15];
-      strftime(date_b, 15, "%d.%m.%Y", &friends[i].date_of_birth);
-      printf("%d. Фамилия: %s; Имя: %s; Отчество: %s; Дата рождения: %s; Адрес: %s; Номер телефона: %s\n", i + 1, friends[i].surname, friends[i].name, friends[i].patronymic, date_b, friends[i].address, friends[i].phone_number);
+    char note[256];
+    printf("Введите название: ");
+    fgets(note, 255, stdin);
+    note[strlen(note) - 1] = 0;
+    sprintf(c[n].name, "%s", note);
+    printf("Введите категорию: ");
+    fgets(note, 255, stdin);
+    note[strlen(note) - 1] = 0;
+    sprintf(c[n].category, "%s", note);
+    printf("Введите каллоррии: ");
+    scanf("%d", &c[n].calories);
+    printf("Введите количество граммов: ");
+    scanf("%d", &c[n].grams);
+    printf("Введите цену: ");
+    scanf("%d", &c[n].price);
+    fgets(note, 10, stdin);
 }
 
-// Удаление записи по номеру
-void del_note(friends friiends[], int count, int del) 
+void all_notes(cafe c[], int n)
 {
-  for (int i = del; i < count - 1; i++) {
-    friends temp = friiends[i]  
-    friiends[i] = friiends[i + 1];
-    friiends[i + 1] = temp;
-  }
+    for (int i = 0; i < n; i++)
+        printf("%d note: name: %s, category: %s, calories: %d, grams: %d, price: %d\n", i + 1, c[i].name, c[i].category, c[i].calories, c[i].grams, c[i].price);
 }
 
-int main(){
-  int n = 0; 
-  int del;
-  char* query = (char*)malloc(sizeof(char) * 100);
-  struct friends friiends[20];
-  
-  printf(" \"1\" Добавить новую запись\n");
-  printf(" \"2\" Удалить запись\n");
-  printf(" \"3\" Просмотреть все записи\n");
-  printf(" \"4\" Выборка записей по месяцу рождения\n");
-  printf(" \"5\" Завершить программу\n");
+void del_note(cafe c[], int n, int del)
+{
+    for (int i = del; i < n - 1; i++)
+    {
+        cafe temp = c[i];
+        c[i] = c[i + 1];
+        c[i + 1] = temp;
+    }
+}
 
-  while (strcmp(query, "5"))
-  {
-      fgets(query, 100, stdin);
-      query[strlen(query) - 1] = 0
-      if (!strcmp(query, "1"))
-      {
-          add_note(friiends, n);
-          n++;
-      }
-      else if (!strcmp(query, "3"))
-        print_notes(friiends, n);
-      else if (!strcmp(query, "4"))
-      {
-        int month;
-        printf("Введите месяц для поиска (от 1 до 12)\n");
-        scanf("%d", &month);
-        print_month_notes(frends, count, month);
-      } 
-      else if (!strcmp(query, "2"))
-      {
-          printf("Выберите запись, которую хотите удалить: ");
-          scanf("%ls", &del);
-          fgets(query, 10, stdin);
-          del_note(friiends, n, del - 1);
-          n--;
-      }
-  }
-  return 0;
+int file_input(FILE* f, cafe c[])
+{
+    char str[256];
+    char *istr;
+    int count = 0;
+    while (fgets(str, 256, f) != NULL)
+    {
+        istr = strtok(str, ";\n");
+        sprintf(c[count].name, "%s", istr);
+        istr = strtok(NULL, ";\n");
+        sprintf(c[count].category, "%s", istr);
+        istr = strtok(NULL, ";\n");
+        c[count].calories = atoi(istr);
+        istr = strtok(NULL, ";\n");
+        c[count].grams = atoi(istr);
+        istr = strtok(NULL, ";\n");
+        c[count].price = atoi(istr);
+        count++;
+    }
+    return count;
+}
+
+void file_output(FILE* f, cafe c[], int count)
+{
+    for (int i = 0; i < count; i++)
+        fprintf(f, "%s;%s;%d;%d;%d\n", c[i].name, c[i].category, c[i].calories, c[i].grams, c[i].price);
+}
+
+void find_second_course(cafe c[], int count)
+{
+  for (int i = 0; i < count; i++)
+    if (!strcmp(c[i].category, "second course"))
+        printf("name: %s, category: %s, calories: %d, grams: %d, price: %d\n", c[i].name, c[i].category, c[i].calories, c[i].grams, c[i].price);
+}
+
+int main() {
+    int count = 0, del;
+    char* query = (char*)malloc(sizeof(char) * 100);
+    cafe c[50];
+    FILE* file = fopen("input.txt", "r");
+    count = file_input(file, c);
+    fclose(file);
+
+    printf("Введите \"q\" если хотите выйти\n");
+    printf("Введите \"add\" если хотите добавить новую запись\n");
+    printf("Введите \"del\" и номер записи, если хотите удалить запись\n");
+    printf("Введите \"ls\" если хотите увидеть все записи\n");
+    printf("Введите \"second\" если хотиите увидеть все вторые блюда\n");
+
+    while (strcmp(query, "q"))
+    {
+        printf("-> ");
+        fgets(query, 99, stdin);
+        query[strlen(query) - 1] = 0;
+        if (!strcmp(query, "add"))
+        {
+            add_note(c, count);
+            count++;
+        }
+        else if (!strcmp(query, "ls"))
+            all_notes(c, count);
+        else if (!strcmp(query, "del"))
+        {
+            printf("Введите номер записи, которую хотите удалить: ");
+            scanf("%d", &del);
+            fgets(query, 10, stdin);
+            del_note(c, count, del - 1);
+            count--;
+        }
+        else if (!strcmp(query, "second"))
+          find_second_course(c, count);
+    }
+    file = fopen("input.txt", "w");
+    file_output(file, c, count);
+    fclose(file);
+    free(query);
+    return 0;
 }
